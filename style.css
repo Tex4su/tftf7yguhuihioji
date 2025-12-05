@@ -1,9 +1,37 @@
+@media (max-width: 480px) {
 
-body { font-family: Arial; margin: 0; background: #f5f5f5; }
-header { background: #ffffff; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.header-content { display: flex; align-items: center; justify-content: flex-start; gap: 10px; padding-left: 20px; }
-.logo { height: 40px; }
-.product-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); padding: 20px; gap: 20px; }
-.product { background: white; padding: 15px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-.product img { width: 100%; border-radius: 6px; }
-.btn { display: inline-block; padding: 10px 15px; background: #25D366; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+    /* Grid jadi 2 kolom kecil seperti Tokopedia */
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px; /* Lebih rapat */
+    }
+
+    /* Card lebih kecil */
+    .product-card {
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    /* Tinggi gambar dikecilkan seperti Tokopedia */
+    .product-card img {
+        height: 100px;      /* Semula 180px → sekarang kecil */
+        object-fit: cover;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Font judul dan harga lebih kecil */
+    .product-info {
+        padding: 8px;
+    }
+
+    .product-info h2 {
+        font-size: 12px;
+        line-height: 1.2;
+        margin-bottom: 4px;
+    }
+
+    .product-info p {
+        font-size: 12px;
+        font-weight: 600;
+    }
+}
