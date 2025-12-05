@@ -4,91 +4,229 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toko Digital Modern</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: #f2f2f2; }
+
+        header {
+            background-color: #1e90ff;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .header-content img {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+        }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+
+        .search-bar { margin-bottom: 20px; text-align: center; }
+        .search-bar input {
+            width: 100%; max-width: 400px; padding: 10px 15px;
+            border-radius: 8px; border: 1px solid #ccc; font-size: 16px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            cursor: pointer; transition: 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .product-card img { width: 100%; height: 180px; object-fit: cover; }
+        .product-info { padding: 15px; }
+        .product-info h2 { margin-bottom: 8px; font-size: 18px; }
+        .product-info p { color: #555; font-size: 14px; }
+
+        /* ---------------------------------------
+           FIX RESPONSIVE DI HP (2 KOL0M)
+        --------------------------------------- */
+        @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 10px;
+            }
+
+            .product-card img {
+                height: 120px;
+            }
+
+            .product-info h2 {
+                font-size: 14px;
+            }
+
+            .product-info p {
+                font-size: 12px;
+            }
+        }
+
+        /* MODAL */
+        .modal-bg {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none; justify-content: center; align-items: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: white; padding: 20px; max-width: 450px;
+            border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: fadeIn 0.25s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-box img {
+            width: 100%; border-radius: 10px; margin-bottom: 15px;
+        }
+
+        .buy-button {
+            width: 100%; margin-top: 15px;
+            background: #25D366; border: none; color: white;
+            padding: 12px; border-radius: 8px; font-size: 16px;
+            cursor: pointer; font-weight: 600;
+        }
+        .buy-button:hover { background: #128C7E; }
+
+        .close-btn {
+            background: red; border: none; color: white;
+            padding: 8px 15px; border-radius: 8px; cursor: pointer;
+            float: right; margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
 <header>
     <div class="header-content">
-        <img src="https://files.catbox.moe/example.png" class="logo" alt="Logo">
+        <img src="https://files.catbox.moe/prrzni.png" alt="Logo">
         <h1>Toko Digital Modern</h1>
     </div>
 </header>
 
-<section class="product-list">
-    <!-- 10 produk contoh -->
+<div class="container">
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="filterProducts()">
+    </div>
 
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+1" alt="Produk 1">
-        <h2>Produk 1</h2>
-        <p>Deskripsi produk 1 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%201" class="btn">Pesan via WhatsApp</a>
+    <div class="product-grid" id="productGrid"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+    <div class="modal-box" id="modalBox">
+        <button class="close-btn" onclick="closeModal()">Tutup</button>
+        <img id="modalImg">
+        <h2 id="modalName"></h2>
+        <p id="modalDesc"></p>
+        <p id="modalPrice"></p>
+        <button class="buy-button" id="modalBuyBtn">Beli via WhatsApp</button>
     </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+2" alt="Produk 2">
-        <h2>Produk 2</h2>
-        <p>Deskripsi produk 2 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%202" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+3" alt="Produk 3">
-        <h2>Produk 3</h2>
-        <p>Deskripsi produk 3 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%203" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+4" alt="Produk 4">
-        <h2>Produk 4</h2>
-        <p>Deskripsi produk 4 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%204" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+5" alt="Produk 5">
-        <h2>Produk 5</h2>
-        <p>Deskripsi produk 5 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%205" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+6" alt="Produk 6">
-        <h2>Produk 6</h2>
-        <p>Deskripsi produk 6 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%206" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+7" alt="Produk 7">
-        <h2>Produk 7</h2>
-        <p>Deskripsi produk 7 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%207" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+8" alt="Produk 8">
-        <h2>Produk 8</h2>
-        <p>Deskripsi produk 8 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%208" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+9" alt="Produk 9">
-        <h2>Produk 9</h2>
-        <p>Deskripsi produk 9 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%209" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-    <div class="product">
-        <img src="https://placehold.co/300x200?text=Produk+10" alt="Produk 10">
-        <h2>Produk 10</h2>
-        <p>Deskripsi produk 10 - panjang, lengkap, dan informatif.</p>
-        <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20beli%20Produk%2010" class="btn">Pesan via WhatsApp</a>
-    </div>
-    
-</section>
+</div>
+
+<script>
+    const products = [
+        {
+            name: "Panel 1GB",
+            description: "Software untuk meningkatkan produktivitas. Termasuk update 1 tahun.",
+            price: 150000,
+            img: "https://files.catbox.moe/prrzni.png"
+        },
+        {
+            name: "Panel 2GB",
+            description: "Panduan lengkap belajar coding dari pemula sampai mahir.",
+            price: 50000,
+            img: "https://files.catbox.moe/prrzni.png"
+        },
+        {
+            name: "Panel 3GB",
+            description: "Template website modern siap pakai.",
+            price: 100000,
+            img: "https://files.catbox.moe/prrzni.png"
+        },
+        {
+            name: "Panel 4GB",
+            description: "Koleksi 500+ ikon untuk UI/UX premium.",
+            price: 75000,
+            img: "https://files.catbox.moe/prrzni.png"
+        }
+    ];
+
+    const productGrid = document.getElementById('productGrid');
+
+    function displayProducts(list) {
+        productGrid.innerHTML = "";
+        list.forEach((product, index) => {
+            const card = document.createElement("div");
+            card.className = "product-card";
+            card.onclick = () => openModal(index);
+            card.innerHTML = `
+                <img src="${product.img}">
+                <div class="product-info">
+                    <h2>${product.name}</h2>
+                    <p>Rp${product.price.toLocaleString()}</p>
+                </div>
+            `;
+            productGrid.appendChild(card);
+        });
+    }
+
+    displayProducts(products);
+
+    function filterProducts() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = products.filter(p => p.name.toLowerCase().includes(q));
+        displayProducts(filtered);
+    }
+
+    // MODAL
+    function openModal(index) {
+        const p = products[index];
+        document.getElementById('modalName').innerText = p.name;
+        document.getElementById('modalDesc').innerText = p.description;
+        document.getElementById('modalPrice').innerText = "Harga: Rp" + p.price.toLocaleString();
+        document.getElementById('modalImg').src = p.img;
+        document.getElementById('modalBuyBtn').onclick = function () {
+            buyProduct(p.name, p.price);
+        };
+        document.getElementById('modalBg').style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById('modalBg').style.display = "none";
+    }
+
+    function buyProduct(name, price) {
+        const phone = "6281234567890";
+        const msg = `Halo, saya ingin membeli *${name}* seharga Rp${price.toLocaleString()}`;
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        window.open(url, "_blank");
+    }
+</script>
 
 </body>
 </html>
